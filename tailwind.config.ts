@@ -57,6 +57,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        node: {
+          start: "hsl(var(--node-start))",
+          end: "hsl(var(--node-end))",
+          wall: "hsl(var(--node-wall))",
+          visited: "hsl(var(--node-visited))",
+          path: "hsl(var(--node-path))",
+          empty: "hsl(var(--node-empty))",
+        },
+        grid: {
+          line: "hsl(var(--grid-line))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
