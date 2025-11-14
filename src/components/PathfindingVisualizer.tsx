@@ -59,12 +59,15 @@ export default function PathfindingVisualizer() {
     for (let y = 0; y < GRID_ROWS; y++) {
       const row: GridNode[] = [];
       for (let x = 0; x < GRID_COLS; x++) {
+        const isStart = x === 5 && y === 15;
+        const isEnd = x === 44 && y === 15;
+        
         row.push({
           x,
           y,
           isWall: false,
-          isStart: false,
-          isEnd: false,
+          isStart,
+          isEnd,
           isVisited: false,
           isPath: false,
           gScore: Infinity,
@@ -75,19 +78,24 @@ export default function PathfindingVisualizer() {
       }
       newGrid.push(row);
     }
+    
+    // Set default start and end nodes
+    setStartNode(newGrid[15][5]);
+    setEndNode(newGrid[15][44]);
     setGrid(newGrid);
   }, []);
 
   // Draw grid on canvas
   const drawGrid = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || grid.length === 0) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas with white background
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw cells
     grid.forEach((row) => {
@@ -95,20 +103,20 @@ export default function PathfindingVisualizer() {
         const x = node.x * CELL_SIZE;
         const y = node.y * CELL_SIZE;
 
-        // Determine cell color
-        let color = "hsl(var(--node-empty))";
-        if (node.isStart) color = "hsl(var(--node-start))";
-        else if (node.isEnd) color = "hsl(var(--node-end))";
-        else if (node.isPath) color = "hsl(var(--node-path))";
-        else if (node.isVisited) color = "hsl(var(--node-visited))";
-        else if (node.isWall) color = "hsl(var(--node-wall))";
+        // Determine cell color using actual hex values
+        let color = "#FFFFFF"; // white for empty
+        if (node.isStart) color = "#06B6D4"; // cyan
+        else if (node.isEnd) color = "#C026D3"; // magenta
+        else if (node.isPath) color = "#EAB308"; // yellow
+        else if (node.isVisited) color = "#FB923C"; // coral/orange
+        else if (node.isWall) color = "#334155"; // dark gray
 
         ctx.fillStyle = color;
         ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 
         // Draw grid lines
-        ctx.strokeStyle = "hsl(var(--grid-line))";
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = "#E2E8F0";
+        ctx.lineWidth = 0.5;
         ctx.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
       });
     });
@@ -532,23 +540,23 @@ export default function PathfindingVisualizer() {
               <h2 className="text-lg font-semibold mb-3">Legend</h2>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "hsl(var(--node-start))" }} />
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "#06B6D4" }} />
                   <span>Start Node</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "hsl(var(--node-end))" }} />
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "#C026D3" }} />
                   <span>End Node</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "hsl(var(--node-wall))" }} />
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "#334155" }} />
                   <span>Wall</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "hsl(var(--node-visited))" }} />
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "#FB923C" }} />
                   <span>Visited</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "hsl(var(--node-path))" }} />
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: "#EAB308" }} />
                   <span>Final Path</span>
                 </div>
               </div>
