@@ -39,7 +39,7 @@ const GRID_ROWS = 30;
 const CELL_SIZE = 20;
 const ANIMATION_SPEED = 10; // ms between frames
 
-export default function PathfindingVisualizer() {
+export default function ShortestPath() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [grid, setGrid] = useState<GridNode[][]>([]);
   const [selectedTool, setSelectedTool] = useState<Tool>("start");
@@ -428,7 +428,7 @@ export default function PathfindingVisualizer() {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Pathfinding Visualizer
+            Shortest Path Visualizer
           </h1>
           <p className="text-muted-foreground text-lg">
             Compare Dijkstra's Algorithm vs A* Algorithm

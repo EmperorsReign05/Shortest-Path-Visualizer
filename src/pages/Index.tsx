@@ -1,7 +1,7 @@
-import PathfindingVisualizer from "@/components/PathfindingVisualizer";
+import ShortestPath from "@/components/ShortestPath";
 
 const Index = () => {
-  return <PathfindingVisualizer />;
+  return <ShortestPath />;
 };
 
 export default Index;
